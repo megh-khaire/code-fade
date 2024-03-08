@@ -1,4 +1,5 @@
 import os
+import certifi
 from urllib.parse import quote_plus
 
 from dotenv import load_dotenv
@@ -29,7 +30,7 @@ class MongoDBConnection:
         self.client = None
 
     def __enter__(self):
-        self.client = MongoClient(self.uri)
+        self.client = MongoClient(self.uri, tlsCAFile=certifi.where())
         return self.client
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -50,7 +51,7 @@ def bulk_push(collection, data, chunk_size=100):
         db = client[DATABASE]
         db_collection = db[collection]
         for i in range(0, len(data), chunk_size):
-            chunk = data[i : i + chunk_size]
+            chunk = data[i: i + chunk_size]
             db_collection.insert_many(chunk)
 
 

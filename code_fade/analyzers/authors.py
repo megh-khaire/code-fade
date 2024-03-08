@@ -1,3 +1,4 @@
+from dateutil.parser import parse as parse_date
 from datetime import datetime, timezone
 
 from dateutil.relativedelta import relativedelta
@@ -9,11 +10,13 @@ from code_fade.utils.format import convert_to_iso
 
 
 def calculate_author_experience(created_at, first_commit, last_commit):
-    experience = relativedelta(datetime.now(timezone.utc), datetime.fromisoformat(created_at))
     repo_experience = relativedelta(
-        datetime.fromisoformat(last_commit), datetime.fromisoformat(first_commit)
+        datetime.fromisoformat(
+            last_commit), datetime.fromisoformat(first_commit)
     )
-    return experience.years, repo_experience.years
+    experience = relativedelta(datetime.now(timezone.utc), parse_date(
+        created_at)).years if created_at else -1
+    return experience, repo_experience.years
 
 
 def generate_author_metadata(owner, repo_name, repo_path):

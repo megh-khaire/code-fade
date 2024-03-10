@@ -75,6 +75,8 @@ def generate_line_changes(owner, repo_name, repo_path):
                                 "added_by": author,
                             }
                         for line_hash in deleted_lines:
+                            if line_hash not in files[file_hash]:
+                                continue
                             changed_line = files[file_hash].pop(line_hash)
                             removed_at = convert_to_iso(commit.committer_date)
                             lifespan = calculate_code_lifespan(

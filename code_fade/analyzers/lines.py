@@ -50,7 +50,10 @@ def generate_line_changes(owner, repo_name, repo_path):
         for commit in repository.traverse_commits():
             author_email = commit.author.email
             if author_email not in authors:
-                authors[author_email] = fetch_author(repo_name, author_email)["login"]
+                author = fetch_author(repo_name, author_email)
+                authors[author_email] = (
+                    author["login"] if "login" in author else "unknown"
+                )
             author = authors[author_email]
             for mod in commit.modified_files:
                 file_path = mod.new_path or mod.old_path

@@ -143,7 +143,7 @@ def fetch_author_metadata(owner, repo, commit_sha):
         "created_at",
     ]
     user_data = fetch_author_username(owner, repo, commit_sha)
-    if "login" in user_data:
+    if user_data and "login" in user_data:
         sleep(1)
         metadata = fetch_user_metadata(user_data["login"])
         sleep(1)

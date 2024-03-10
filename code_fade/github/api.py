@@ -148,11 +148,4 @@ def fetch_author_metadata(owner, repo, commit_sha):
             return {
                 field: metadata[field] for field in required_fields if field in metadata
             }
-    # User's account has been deleted but we have some metadata
-    else:
-        return {
-            "login": user_data["email"].split("@")[0],
-            "name": user_data["name"],
-            "is_deleted": True,
-        }
     return None

@@ -4,7 +4,7 @@ import traceback
 import code_fade.github.api as cfga
 from code_fade.analyzers.authors import generate_author_metadata
 from code_fade.analyzers.lines import generate_line_changes
-from code_fade.db.authors import bulk_push_authors, delete_all_repo_authors
+from code_fade.db.authors import bulk_push_authors
 from code_fade.db.lines import delete_all_repo_lines
 from code_fade.github.api import delete_repo
 from code_fade.db.core import create_indexes
@@ -24,8 +24,6 @@ def main(github_url, repo_directory="./data"):
         print("Exception: ", e)
         traceback.print_exc()
         print("Executing cleanup...")
-        print("Deleting all authors...")
-        delete_all_repo_authors(repo_name)
         print("Deleting all lines...")
         delete_all_repo_lines(repo_name)
     finally:

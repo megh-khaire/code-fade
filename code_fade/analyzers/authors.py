@@ -22,6 +22,7 @@ def calculate_author_experience(created_at, first_commit, last_commit):
 
 def generate_author_metadata(owner, repo_name, repo_path):
     authors = {}
+    invalid_authors = []
     email_username_map = {}
     repository = Repository(repo_path)
     total_commits = sum(1 for _ in repository.traverse_commits())
@@ -29,7 +30,7 @@ def generate_author_metadata(owner, repo_name, repo_path):
         for commit in repository.traverse_commits():
             author_email = commit.author.email
             # Ignore authors that have been already added
-            if fetch_author(repo_name, author_email):
+            if fetch_author(repo_name, author_email) or author_email in invalid_authors:
                 continue
             commit_date = convert_to_iso(commit.author_date)
             if author_email in email_username_map: # Author already exists with the same email:
@@ -52,6 +53,7 @@ def generate_author_metadata(owner, repo_name, repo_path):
                 )
                 # Ignore authors that have been deleted
                 if not author_metadata:
+                    invalid_authors.append(author_email)
                     continue
                 username = author_metadata["login"]
                 # Author already exists with a different email:

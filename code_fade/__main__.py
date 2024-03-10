@@ -20,14 +20,13 @@ def main(github_url, repo_directory="./data"):
         )
         bulk_push_authors(list(authors.values()))
         generate_line_changes(owner, repo_name, repo_path)
+        delete_repo(repo_path)
     except Exception as e:
         print("Exception: ", e)
         traceback.print_exc()
         print("Executing cleanup...")
         print("Deleting all lines...")
         delete_all_repo_lines(repo_name)
-    finally:
-        delete_repo(repo_path)
 
 
 if __name__ == "__main__":

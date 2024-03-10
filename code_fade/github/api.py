@@ -18,6 +18,9 @@ HEADERS = {"Authorization": f'token {os.getenv("GITHUB_TOKEN")}'}
 def clone_repo(git_url, directory, repo_name):
     try:
         full_path = os.path.join(directory, repo_name)
+        if os.path.exists(full_path):
+            print(f"Repository {repo_name} already exists in {directory}")
+            return full_path
         print(f"Cloning {git_url} into {full_path}...")
         Repo.clone_from(git_url, full_path)
         print("Repository cloned successfully.")

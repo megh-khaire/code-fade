@@ -52,7 +52,7 @@ def generate_line_changes(owner, repo_name, repo_path):
             if author_email not in authors:
                 author = fetch_author(repo_name, author_email)
                 authors[author_email] = (
-                    author["login"] if "login" in author else "unknown"
+                    author["login"] if author else "unknown"
                 )
             author = authors[author_email]
             for mod in commit.modified_files:
